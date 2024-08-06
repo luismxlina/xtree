@@ -4,6 +4,6 @@
 *.ptx
 *.cubin
 *.fatbin
-./build/
+build/
 .vscode/
 .cache/
