@@ -1,53 +1,30 @@
-cmake_minimum_required(VERSION 3.18) # 3.18 is required for CUDAToolkit
-project(xtree LANGUAGES CXX CUDA) # Specify CUDA as a required language
+cmake_minimum_required(VERSION 3.18) # Requerido para CUDAToolkit
+project(xtree LANGUAGES CXX CUDA) # Definir el nombre del proyecto y los lenguajes
 
-# Set C++ Standards
+# Establecer el estándar de C++
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Pass options to NVCC
-set(
-    CUDA_NVCC_FLAGS
-    ${CUDA_NVCC_FLAGS};
-    -O3 -gencode arch=compute_50,code=sm_50
-    )
-
-# FIND LIBRARIES
+# Búsqueda de bibliotecas y paquetes
 find_package(OpenCV QUIET REQUIRED)
-find_package(CUDAToolkit QUIET REQUIRED) # Use CUDAToolkit instead of CUDA
+find_package(CUDAToolkit QUIET REQUIRED)
 
-# Find CUDA libraries
+# Encontrar las bibliotecas de CUDA
 find_library(CUDA_LIBRARIES NAMES cudart HINTS ${CUDAToolkit_LIBRARY_DIR})
 
-# Specify include directories
+# Directorios de inclusión globales
 include_directories(
     ${OpenCV_INCLUDE_DIRS}
-    ${CUDAToolkit_INCLUDE_DIRS} # Use CUDAToolkit_INCLUDE_DIRS instead of CUDA_INCLUDE_DIRS
+    ${CUDAToolkit_INCLUDE_DIRS}
 )
 
-# Target the only executable
-add_executable(
-    ${PROJECT_NAME}
-    main.cu
+# Opciones de NVCC
+set(CUDA_NVCC_FLAGS
+    ${CUDA_NVCC_FLAGS};
+    -O3 -gencode arch=compute_50,code=sm_50
 )
 
-add_executable(hello_world_cpu examples/hello_world_cpu.cu)
-target_link_libraries(hello_world_cpu ${CUDA_LIBRARIES})
-
-add_executable(hello_world examples/hello_world.cu)
-target_link_libraries(hello_world ${CUDA_LIBRARIES})
-
-add_executable(matrix_multiplication examples/matrix_multiplication.cu)
-target_link_libraries(matrix_multiplication ${CUDA_LIBRARIES})
-
-add_executable(vector_sum examples/vector_sum.cu)
-target_link_libraries(vector_sum ${CUDA_LIBRARIES})
-
-# For linking ...
-# Specify target & libraries to link it with
-target_link_libraries(
-    ${PROJECT_NAME}
-    ${OpenCV_LIBS}
-    ${CUDA_LIBRARIES}
-)
+# Incluir subdirectorios
+add_subdirectory(src)
+add_subdirectory(examples)

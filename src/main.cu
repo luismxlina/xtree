@@ -49,6 +49,8 @@
 #include <opencv.hpp>
 #include <vector>
 
+#include "kernels.cu"
+
 // Declaración del kernel
 __global__ void count_colors(const unsigned char* input, int width, int height, int* red_count, int* green_count, int* blue_count);
 
