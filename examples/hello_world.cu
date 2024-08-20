@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 __global__ void helloFromGPU(void) {
-    printf("¡Hola, mundo desede la GPU!\n");
+    printf("¡Hola, mundo desde la GPU!\n");
 }
 
 int main(void) {
